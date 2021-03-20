@@ -96,8 +96,11 @@ export const createUserWithEmailAndPassword=(name,email,password)=>{
       newUserInfo.error='';
       newUserInfo.success=email+ ' created and signed in  successfully';
       newUserInfo.isSignedIn=true;
+      newUserInfo.isSignedIn=true;
       updateUserName(name);
+      newUserInfo.name=name;
       return newUserInfo;
+      
       // ...
     })
     .catch((error) => {
@@ -136,7 +139,8 @@ const updateUserName=(name)=>{
     })
     .then(res=> {
       console.log('Update Successful')
+      //return res;
     }).catch(error=>{
-      console.log(error);
+      console.log(error+'by update');
     });
   }

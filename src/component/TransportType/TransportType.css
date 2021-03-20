@@ -1,6 +1,9 @@
 .card-box{
     text-align: center;
 }
+.card-box{
+    margin-bottom: 20px;
+}
 .card-box .inner-box {
     display: block;
     background: white;

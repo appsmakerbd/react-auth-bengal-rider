@@ -6,7 +6,8 @@ import './Home.css';
 
 const Home = () => {
     const [transportTypes,setTransportTypes]=useState(transportTypeJson);
-    console.log(transportTypes);
+    //setTransportTypes();
+    //console.log(transportTypes);
     return (
         <div className="home-area">
             <div className="container">

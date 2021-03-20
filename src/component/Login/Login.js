@@ -3,6 +3,8 @@ import { UserContext } from "../../App";
 import { useHistory, useLocation } from "react-router";
 import { handleSignOut, handleGoogleSignIn, initializeLoginFramework, handleFbSignIn, createUserWithEmailAndPassword, signInWithEmailAndPassword } from './LoginManager';
 import './Login.css';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
@@ -94,10 +96,11 @@ function Login() {
   //Submitting the form and inserting into firebase
   const handleSubmit=(event)=>{
     event.preventDefault();
-    console.log('submitted');
+    //console.log('submitted');
 
+    //Sign up
     if(newUser && userInfo.email && userInfo.password){
-        console.log('submitted new user');
+      //console.log(userInfo.name+ 'submitted new user');
       createUserWithEmailAndPassword(userInfo.name, userInfo.email, userInfo.password)
       .then(res=>shortenResponse(res,true))
     }
@@ -113,6 +116,7 @@ function Login() {
 
 
   const shortenResponse=(res, redirectAction)=>{
+    console.log(res);
     setUserInfo(res);
     setLoggedInUser(res);
     redirectAction && history.replace(from);
@@ -120,77 +124,64 @@ function Login() {
 
 
   return (
-    <div className="App">
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-      {
-        userInfo.isSignedIn? <button onClick={signOut}>Sign Out</button> :  <div><button onClick={googleSignIn}>Continue with Google</button> <button onClick={fbSignIn}>Continue with Facebook</button></div>
-      }
-
-      {
-        userInfo.isSignedIn && <div>
-            <h1>Welcome {userInfo.name}</h1>
-            <img src={userInfo.photo} alt={userInfo.photo}/>
-          </div>
-      }
-
-
-      <div>
-        
-        {
-          userInfo.error && <p style={{color:'red'}}>{userInfo.error}</p>
-        }
-        {
-          userInfo.success && <p style={{color:'green'}}>{userInfo.success}</p>
-        }
-        {
-          newUser? <h1>Create New Account</h1> : <h1>Login Now</h1>
-        }
-
-        <input type="checkbox" name="newUser" id="" onChange={()=>setNewUser(!newUser)}/>
-        <label htmlFor="">New USer Signup |</label>
-       
-
-
-      </div>
-
-
+    
       <div className="container login-area">
-            <div className="gap-3 col-5 mx-auto login-box">
+            <div className=" col-lg-5 col-md-5 col-sm-8 col-xs-12 mx-auto login-box">
                 <div className="customAuth">
-                    <h2>Create and Account</h2>
+                    {
+                      userInfo.error && <p style={{color:'red'}}>{userInfo.error}</p>
+                    }  
+                    {
+                      newUser?<h2>Create New Account</h2> : <h2>Login</h2>
+                    }
+                    
                     <form onSubmit={handleSubmit}>
+                      {
+                        newUser && <div className="form-group"><input onBlur={handleBlur} type="text" className="form-control" name="name" placeholder="Name"/></div>
+                      }
+                        
                         <div className="form-group">
-                            <input onBlur={handleBlur} type="text" class="form-control" name="name" placeholder="Name"/>
+                            <input onBlur={handleBlur} type="text" className="form-control" name="email" placeholder="Username E-mail"/>
                         </div>
                         <div className="form-group">
-                            <input onBlur={handleBlur} type="text" class="form-control" name="email" placeholder="Username E-mail"/>
+                            <input onBlur={handleBlur} type="password" className="form-control" name="password" placeholder="Password"/>
                         </div>
-                        <div className="form-group">
-                            <input onBlur={handleBlur} type="password" class="form-control" name="password" placeholder="Password"/>
+                        {
+                          newUser && <div className="form-group"><input onBlur={handleBlur} type="password" className="form-control" name="repassword" placeholder="Confirm Password"/></div>
+                        }
+                        
+
+                        {
+                          !newUser && <RememberMe></RememberMe>
+                        }
+                        
+
+
+                        <div className="form-group form-buttons-area">
+                            {newUser? <><input className="signing" type="submit" value="Create New Account"/><p>Already have an account? <span onClick={()=>setNewUser(false)}>Login</span></p></> : <><input className="signing" type="submit" value="Login"/><p>Don't have an account? <span onClick={()=>setNewUser(true)}>Create an Account</span></p></>}
                         </div>
-                        <div className="form-group">
-                            <input onBlur={handleBlur} type="password" class="form-control" name="repassword" placeholder="Confirm Password"/>
-                        </div>
-                        <div className="form-group">
-                            {newUser? <><input type="submit" value="Create New Account"/><p>Already have an account? <span>Login</span></p></> : <><input type="submit" value="Login"/><p>Don't have an account? <span>Create an Account</span></p></>}
-                        </div>
+                        
                     </form>
                 </div>
-                <p>---------------or------------</p>
-                <div class="socialAuth">
-                    <button onClick={fbSignIn} class="btn btn-primary fb" type="button">Continue with Facebook</button>
-                    <button onClick={googleSignIn} class="btn btn-danger google" type="button">Continue with Google</button>
+                <p>---------------or---------------</p>
+                <div className="socialAuth">
+                    <button onClick={fbSignIn} className="btn btn-outline-primary fb" type="button"><FontAwesomeIcon icon={["fab", "facebook"]} /> Continue with Facebook</button>
+                    <button onClick={googleSignIn} className="btn btn-outline-danger google" type="button"><FontAwesomeIcon icon={["fab", "google"]} /> Continue with Google</button>
                 </div>
             </div>
         </div>
+  );
+}
 
+
+const RememberMe=()=>{
+  return (
+    <div className="remember-me d-flex justify-content-between">
+      <div className="form-check">
+        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+        <label className="form-check-label" htmlFor="flexCheckDefault">Remember Me</label>
+      </div>
+      <Link to="#">Forgot Password?</Link>
     </div>
   );
 }

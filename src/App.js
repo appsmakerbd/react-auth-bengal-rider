@@ -13,8 +13,16 @@ import Header from './component/Header/Header';
 import Destination from './component/Destination/Destination';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 
+//Font Awesome Library for individual component use
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
+
 export const UserContext=createContext();
 
+//Passing fonts using Library
+library.add(fab,fas)
 function App() {
   const [loggedInUser,setLoggedInUser]=useState({});
   return (
@@ -37,9 +45,16 @@ function App() {
             <Login></Login>
           </Route>
           
+          
+
+          <PrivateRoute exact path="/destination/:transportation">
+            <Destination></Destination>
+          </PrivateRoute>
+
           <PrivateRoute path="/destination">
             <Destination></Destination>
           </PrivateRoute>
+
           
         </Switch>
       </>
