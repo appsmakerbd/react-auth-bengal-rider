@@ -1,0 +1,21 @@
+.login-area{
+    padding-top: 200px;
+}
+
+.login-box{
+    text-align: center;
+}
+.login-box p{}
+
+.customAuth{}
+.customAuth h2{}
+.customAuth form{}
+.customAuth input{}
+
+.socialAuth{}
+.socialAuth button{
+    display: block;
+    margin: 5px auto;
+}
+.socialAuth .fb{}
+.socialAuth .google{}

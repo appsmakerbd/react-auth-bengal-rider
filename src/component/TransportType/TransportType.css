@@ -1,0 +1,30 @@
+.card-box{
+    text-align: center;
+}
+.card-box .inner-box {
+    display: block;
+    background: white;
+    padding: 50px 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor:pointer;
+    transition: 500ms;
+}
+.card-box .inner-box:hover{
+    transform:scale(1.2);
+}
+.card-box .inner-box img {
+    width: 120px;
+    transition: 800ms;
+}
+
+.card-box .inner-box:hover img{
+    transform: rotate(360deg);
+}
+
+.card-box .inner-box h2 {
+    text-transform: uppercase;
+    color: black;
+    font-size: 18px;
+    margin: 20px 0 0;
+}

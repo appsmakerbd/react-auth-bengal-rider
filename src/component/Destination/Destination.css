@@ -1,0 +1,16 @@
+.destination-area{
+    padding-top:200px
+}
+.left-box{
+    padding:5px
+}
+.left-box .inner-box{
+    background:rgba(0,0,0,0.05);
+    border-radius:10px;
+    padding:10px;
+}
+.left-box .inner-box input[type=submit]{
+    display:block;
+    width:100%;
+}
+.right-box{}
