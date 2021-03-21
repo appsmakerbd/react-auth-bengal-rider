@@ -12,7 +12,7 @@ Bengal Rider is a ride sharing app.
 - React Bootstrap for responsive design & Icon from Font Awesome
 
 
-You can   [visit Demo Site By Click in here](https://github.com/facebook/create-react-app).
+You can   [visit Demo Site By Click in here](https://bengal-rider.web.app/).
 
 ------------
 With Thanks 
