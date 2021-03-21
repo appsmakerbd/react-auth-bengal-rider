@@ -126,9 +126,12 @@ export const signInWithEmailAndPassword=(email,password)=>{
     })
     .catch((error) => {
         const newUserInfo={}
+        const errorCode = error.code;
         newUserInfo.error=error.message;
+        console.log('hello');
         return newUserInfo;
     });
+    
 }
 
 

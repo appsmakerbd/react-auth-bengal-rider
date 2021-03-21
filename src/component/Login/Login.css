@@ -15,7 +15,7 @@
 .customAuth .form-group{
     margin-bottom: 20px;
 }
-.customAuth input[type=text] ,.customAuth input[type=password]{
+.customAuth input[type=text],.customAuth input[type=email] ,.customAuth input[type=password]{
     border:none;
     border-bottom: 1px solid rgba(0,0,0,0.25);
     border-radius:0;

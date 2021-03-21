@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Login() {
   initializeLoginFramework();
+  const [loginError,setLoginError]=useState('');
   const [newUser,setNewUser]=useState(false)
   const[userInfo,setUserInfo]=useState({
     isSignedIn:false,
@@ -58,37 +59,64 @@ function Login() {
 
   //Error Handling using Regular expression
   const handleBlur=(event)=>{
+
     let isFormValidate=true;
     const targetName=event.target.name;
     const targetValue=event.target.value;
+    
+   
     //console.log(event.target.name,event.target.value)
+    
     if(targetName==='email'){
-      const regExp=/\S+@\S+\.\S+/
+      const regExp=/\S+@\S+\.\S+/;
       const isEmailValidate=regExp.test(targetValue);
-      isFormValidate=isEmailValidate;
+      const isFormValidate=isEmailValidate;
+      !isEmailValidate? setLoginError('Please provide valid email') : setLoginError('');
       //console.log(isEmailValidate)
     }
 
     if(targetName==='password'){
-      const regExpPass=/\d{1}/
-      const passHasNumber=regExpPass.test(targetValue);
-      const isPassValidate=targetValue.length>7 && passHasNumber;
-      isFormValidate=isPassValidate;
+      const pass=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+      const passHasNumber=pass.test(targetValue);
+      const isFormValidate=passHasNumber;
+      //console.log(isFormValidate+'only pass'+passHasNumber);
+      !passHasNumber && setLoginError('Password should be numeric digit, one uppercase and one lowercase letter') 
       //console.log(isPassValidate)
     }
 
+    if(targetName==='repassword'){
+      const pass=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+      const passHasNumber=pass.test(targetValue);
+      const isFormValidate=passHasNumber;
+      const password=userInfo.password;
+      if( !passHasNumber || password!==targetValue){
+        setLoginError('Password and Confirm Password should be same & must be contain numeric digit, one uppercase and one lowercase letter');
+      }else{
+        setLoginError('');
+      } 
+    }
+
+   
+
+
     if(isFormValidate){
+      
       //copying object data from state
       const newUserInfo={...userInfo}
       //assigning new value
       newUserInfo[targetName]=targetValue;
+      console.log('---------------');
+      console.log(targetName);
       setUserInfo(newUserInfo);
+     
     }else{
       const newUserInfoFalse={...userInfo}
       newUserInfoFalse[targetName]="";
       setUserInfo(newUserInfoFalse);
     }
+    
   } 
+  //End handleblur
 
 
 
@@ -99,7 +127,8 @@ function Login() {
     //console.log('submitted');
 
     //Sign up
-    if(newUser && userInfo.email && userInfo.password){
+    if(newUser && userInfo.email && userInfo.password && loginError.length===0){
+      console.log('signup'+loginError.length);
       //console.log(userInfo.name+ 'submitted new user');
       createUserWithEmailAndPassword(userInfo.name, userInfo.email, userInfo.password)
       .then(res=>shortenResponse(res,true))
@@ -107,7 +136,7 @@ function Login() {
     
     
     //Sign in
-    if(!newUser && userInfo.email && userInfo.password){
+    if(!newUser && userInfo.email && userInfo.password ){
         console.log('submitted existing users');
       signInWithEmailAndPassword(userInfo.email, userInfo.password)
       .then(res=>shortenResponse(res,true))
@@ -117,9 +146,17 @@ function Login() {
 
   const shortenResponse=(res, redirectAction)=>{
     console.log(res);
-    setUserInfo(res);
-    setLoggedInUser(res);
-    redirectAction && history.replace(from);
+    
+    if(res.error){
+      console.log('eita dekhan');
+      setLoginError(res.error);
+    }else{
+      setLoginError('');
+      setUserInfo(res);
+      setLoggedInUser(res);
+      redirectAction && history.replace(from);
+    }
+    
   }
 
 
@@ -129,25 +166,28 @@ function Login() {
             <div className=" col-lg-5 col-md-5 col-sm-8 col-xs-12 mx-auto login-box">
                 <div className="customAuth">
                     {
-                      userInfo.error && <p style={{color:'red'}}>{userInfo.error}</p>
+                      userInfo.error && <p style={{color:'red'}}> {userInfo.error}</p>
                     }  
                     {
                       newUser?<h2>Create New Account</h2> : <h2>Login</h2>
                     }
+                    {
+                      loginError && <p style={{color:'red',fontSize:'12px'}}>{loginError}</p>
+                    }
                     
                     <form onSubmit={handleSubmit}>
                       {
-                        newUser && <div className="form-group"><input onBlur={handleBlur} type="text" className="form-control" name="name" placeholder="Name"/></div>
+                        newUser && <div className="form-group"><input onBlur={handleBlur} type="text" className="form-control" name="name" placeholder="Name" required/></div>
                       }
                         
                         <div className="form-group">
-                            <input onBlur={handleBlur} type="text" className="form-control" name="email" placeholder="Username E-mail"/>
+                            <input onBlur={handleBlur} type="email" id="password" className="form-control" name="email" placeholder="Username E-mail" required/>
                         </div>
                         <div className="form-group">
-                            <input onBlur={handleBlur} type="password" className="form-control" name="password" placeholder="Password"/>
+                            <input onBlur={handleBlur} type="password" id="repassword" className="form-control" name="password" placeholder="Password" required/>
                         </div>
                         {
-                          newUser && <div className="form-group"><input onBlur={handleBlur} type="password" className="form-control" name="repassword" placeholder="Confirm Password"/></div>
+                          newUser && <div className="form-group"><input onBlur={handleBlur} type="password" className="form-control" name="repassword" placeholder="Confirm Password" required/></div>
                         }
                         
 

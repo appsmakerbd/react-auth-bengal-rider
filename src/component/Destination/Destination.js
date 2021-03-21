@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import GoogleMapReact from 'google-map-react';
 import { Row } from 'react-bootstrap';
 import searchData from '../../Data/Search.json';
 import { useParams } from 'react-router';
@@ -9,9 +10,15 @@ import ShowSearchForm from '../ShowSearchForm/ShowSearchForm';
 const Destination = () => {
     //Reading Link
     const {transportation}=useParams();
+    let vehicle;
 
+    if(transportation){
     //Filtering from json
-    const vehicle=searchData.filter(pd => pd.vehicle === transportation);
+        vehicle=searchData.filter(pd => pd.vehicle === transportation);
+    }else{
+        //for direct destination directory visit
+        vehicle=searchData;
+    }
 
     //console.log(vehicle);
     const [searchAction,setSearchAction]=useState(false);
